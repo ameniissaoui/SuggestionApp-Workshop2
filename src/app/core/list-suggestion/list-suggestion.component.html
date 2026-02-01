@@ -1,0 +1,57 @@
+<div class="container">
+  <h2 class="page-title">Liste des suggestions</h2>
+
+  <!-- Barre de recherche -->
+  <div class="search-container">
+    <input 
+      type="text" 
+      [(ngModel)]="searchTerm" 
+      placeholder="Rechercher une suggestion"
+      class="search-input"
+    >
+  </div>
+
+  <!-- Liste des suggestions -->
+  <div class="suggestions-list">
+    <div *ngFor="let suggestion of filteredSuggestions" class="suggestion-card">
+      <h3 class="suggestion-title">{{ suggestion.title }}</h3>
+      
+      <div class="suggestion-meta">
+        <span class="category">{{ suggestion.category }}</span>
+        <span class="date">{{ suggestion.date | date:'dd MMM yyyy' }}</span>
+      </div>
+      
+      <p class="suggestion-description">{{ suggestion.description }}</p>
+      
+      <span class="status-badge" [ngClass]="suggestion.status">
+        {{ suggestion.status | uppercase }}
+      </span>
+      
+      <!-- Boutons - N'apparaissent pas si status = 'refusee' -->
+      <div *ngIf="suggestion.status !== 'refusee'" class="action-buttons">
+        <button 
+          (click)="likeSuggestion(suggestion)"
+          class="btn btn-like"
+        >
+          👍 Like {{ suggestion.nbLikes }}
+        </button>
+        <button 
+          (click)="addToFavorites(suggestion)"
+          class="btn btn-favorite"
+        >
+          ♥ Ajouter aux favoris
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section des favoris (optionnelle) -->
+  <div *ngIf="favorites.length > 0" class="favorites-section">
+    <h3>Mes Favoris ({{ favorites.length }})</h3>
+    <div class="favorites-list">
+      <div *ngFor="let fav of favorites" class="favorite-item">
+        {{ fav.title }}
+      </div>
+    </div>
+  </div>
+</div>
